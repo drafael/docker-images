@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+
+  mongodb:
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        HOST_UID: "${HOST_UID}"
+        HOST_GID: "${HOST_GID}"
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./db:/data/db
