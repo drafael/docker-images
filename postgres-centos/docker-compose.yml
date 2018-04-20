@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+
+  db:
+    container_name: db
+    restart: always
+    build:
+      context: .
+      args:
+        HOST_UID: "${HOST_UID}"
+        HOST_GID: "${HOST_GID}"
+    ports:
+      - 5432:5432
+    tmpfs:
+      - /tmp
+      - /var/run/postgresql
+    volumes:
+      - ./data:/var/lib/pgsql/10/data
+    environment:
+      - PGDATA=/var/lib/pgsql/10/data
+      - POSTGRES_PASSWORD=secret
+
+  adminer:
+    container_name: adminer
+    image: adminer
+    restart: always
+    ports:
+      - 8484:8080
+    links:
+      - db
