@@ -3,6 +3,11 @@ FROM centos:7
 LABEL maintainer="D.R4F4EL <d.r4f4el@gmail.com>"
 LABEL version="Python 3, CentOS 7"
 
+# http://bugs.python.org/issue19846
+# > At the moment, setting "LANG=C" on a Linux system *fundamentally breaks Python 3*, and that's not OK.
+ENV LANG en_US.utf8
+ENV LC_ALL en_US.utf8
+
 ENV PYTHON_VERSION 3.6.6
 
 RUN set -ex; yum -y update; \
