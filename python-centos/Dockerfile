@@ -42,7 +42,7 @@ RUN set -ex; yum -y update; \
   make && make install && ldconfig; \
   \
 # verify that the binaries work
-  /usr/local/bin/python3 --version; \
+  python3 --version; \
   \
   find /usr/local -depth \
   		\( \
@@ -62,10 +62,7 @@ RUN set -ex; \
 	\
 	wget -O get-pip.py 'https://bootstrap.pypa.io/get-pip.py'; \
 	\
-	/usr/local/bin/python3 get-pip.py \
-		--disable-pip-version-check \
-		--no-cache-dir \
-		"pip==$PYTHON_PIP_VERSION"; \
+	python3 get-pip.py --disable-pip-version-check --no-cache-dir "pip==$PYTHON_PIP_VERSION"; \
 	\
 # verify that the pip works	
 	/usr/local/bin/pip --version; \
@@ -123,7 +120,7 @@ RUN set -ex; \
   groupadd python --gid $VENV_GID; \
   useradd python --uid $VENV_UID --gid $VENV_GID --shell /sbin/nologin --home-dir $VENV_DIR --no-create-home; \
   \
-  /usr/local/bin/python3 -m venv $VENV_DIR; \
+  python3 -m venv $VENV_DIR; \
   chown -R $VENV_UID:$VENV_GID $VENV_DIR
 
 WORKDIR $VENV_DIR
@@ -132,4 +129,4 @@ USER python
 
 ENTRYPOINT ["docker-entrypoint.sh"]
 
-CMD ["/usr/local/bin/python3"]
+CMD ["python3"]

@@ -3,7 +3,7 @@
 set -e
 
 if [ "$(id -u)" = '0' ]; then             # current user is root
-  chown -R python:python .                # fix permissions on mounted volumes (if any)
+  chown -R python:python $VENV_DIR        # fix permissions on mounted volumes (if any)
   exec gosu python "$BASH_SOURCE" "$@"    # step-down from root
 fi
 
