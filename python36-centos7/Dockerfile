@@ -64,7 +64,7 @@ RUN set -ex; \
 	\
 	python3 get-pip.py --disable-pip-version-check --no-cache-dir "pip==$PYTHON_PIP_VERSION"; \
 	\
-# verify that the pip works	
+# verify that the pip works
 	/usr/local/bin/pip --version; \
 	\
 	find /usr/local -depth \
@@ -78,55 +78,5 @@ RUN set -ex; \
     yum remove -y wget; \
     yum clean all
 
-ENV GOSU_VERSION 1.10
-
-RUN set -ex; \
-    \
-# grab gosu for easy step-down from root
-    yum -y install epel-release; \
-    yum -y install wget dpkg; \
-    \
-    dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')"; \
-    wget -O /usr/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch"; \
-    wget -O /tmp/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch.asc"; \
-    \
-# verify the signature
-    export GNUPGHOME="$(mktemp -d)"; \
-    gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4; \
-    gpg --batch --verify /tmp/gosu.asc /usr/bin/gosu; \
-    rm -r "$GNUPGHOME" /tmp/gosu.asc; \
-    \
-    chmod +x /usr/bin/gosu; \
-# verify that the binary works
-    gosu nobody true; \
-    \
-    yum remove -y wget dpkg; \
-    yum clean all
-
-
-COPY docker-entrypoint.sh /usr/local/bin
-RUN set -ex; \
-  chmod +x /usr/local/bin/docker-entrypoint.sh
-
-ARG HOST_UID
-ARG HOST_GID
-ARG VENV_DIR
-
-ENV VENV_UID ${HOST_UID:-1000}
-ENV VENV_GID ${HOST_GID:-1000}
-ENV VENV_DIR ${VENV_DIR:-/app}
-
-RUN set -ex; \
-  groupadd python --gid $VENV_GID; \
-  useradd python --uid $VENV_UID --gid $VENV_GID --shell /sbin/nologin --home-dir $VENV_DIR --no-create-home; \
-  \
-  python3 -m venv $VENV_DIR; \
-  chown -R $VENV_UID:$VENV_GID $VENV_DIR
-
-WORKDIR $VENV_DIR
-
-USER python
-
-ENTRYPOINT ["docker-entrypoint.sh"]
 
 CMD ["python3"]

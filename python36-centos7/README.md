@@ -3,8 +3,8 @@
 Pre installed packages:
 
 * CentOS 7 base image
-* Python 3, pip, venv dir `/app`
-* [gosu](https://github.com/tianon/gosu#gosu) for easy step-down from root
+* Python 3.6.6
+* pip 18
 
 #### How to Build
 
