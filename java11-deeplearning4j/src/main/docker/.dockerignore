@@ -1,0 +1,7 @@
+archive-tmp/
+classes/
+generated-*/
+maven-*/
+surefire-reports/
+test-classes/
+dependency-maven-plugin-markers/
