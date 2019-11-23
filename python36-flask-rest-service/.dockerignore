@@ -1,0 +1,9 @@
+.git/
+.idea/
+test/
+__pycache__/
+
+bin/
+include/
+lib/
+pyvenv.cfg
